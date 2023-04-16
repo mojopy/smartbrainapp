@@ -17,4 +17,4 @@ The recognition software is heavily dependent on [clarifai](clarifai.com).
 - [ ] Dynamic Bounding Box resizes.
 
 - [ ] Sign-up / Register Processes
-- [ ] Move things into backend, ...
+- [ ] Move things into backend, create database for ranking, etc.
