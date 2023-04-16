@@ -1,0 +1,14 @@
+#topElements {
+    display: grid;
+    grid-auto-flow: column;
+    margin-top: 30px;
+}
+
+.top.logo {
+    justify-self: left;
+}
+
+.top.signout {
+    justify-self: right;
+    margin-right: 30px;
+}

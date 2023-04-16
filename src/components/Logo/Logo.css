@@ -1,0 +1,6 @@
+.LogoComponent {
+    width: 128px;
+    height: 128px;
+
+    background: linear-gradient(to left, #a463f2d5, #00000000 65%) no-repeat fixed;
+}
