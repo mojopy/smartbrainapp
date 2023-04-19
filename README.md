@@ -14,7 +14,7 @@ The recognition software is heavily dependent on [clarifai](clarifai.com).
 
 - [x] Detect face and draw one bounding box.
 - [x] Draw multiple bounding boxes at once.
-- [ ] Dynamic Bounding Box resizes.
+- [x] Dynamic Bounding Box resizes.
 
 - [ ] Sign-up / Register Processes
 - [ ] Move things into backend, create database for users, their ranking, ...

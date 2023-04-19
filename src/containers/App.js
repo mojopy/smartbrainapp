@@ -6,7 +6,8 @@ import ImageLinkForm from '../components/ImageLinkForm/ImageLinkForm';
 import Rank from '../components/Rank/Rank';
 import SusBackground from "../components/SusBackground/SusBackground";
 import FaceRecognition from "../components/FaceRecognition/FaceRecognition";
-// import PAT_KEY from "../PATKEY"
+import BBAutoResize from "../components/FaceRecognition/BBAutoResize";
+// import SignIn from "../components/SignIn/SignIn";
 import './App.css';
 
 const MODEL_ID = 'face-detection';
@@ -55,8 +56,10 @@ class App extends Component {
     super(props);
     this.state = {
       input: '',
+      boxesSizes: [],
       boxesIDs: [],
-      active: false
+      active: false,
+      route: 'signin'
     }
   }
 
@@ -73,7 +76,9 @@ class App extends Component {
       arrayOfFaces = [];
     }
 
-    return arrayOfFaces;
+    this.setState({boxesSizes: arrayOfFaces[0]});
+
+    return arrayOfFaces[0];
   }
 
   // TODO: Dynamic bounding boxes resizes if images also resizes (window gets smaller, etc)
@@ -83,18 +88,18 @@ class App extends Component {
     const height = Number(image.height);
     const newSetOfIDs = [];
   
-    a.forEach((fullArray) => fullArray.forEach((box, i) => {
+    a.forEach((box, i) => {
         const newBB = document.createElement("div")
-        newBB.id=String(Math.floor(Math.random() * Math.random(100, 1000) * Date.now()));
+        newBB.id="BB" + (i + 1) * 256;
         newSetOfIDs.push(newBB.id);
         newBB.className="bounding-box";
-        newBB.setAttribute("style", "top: " + (box.top_row * height) + 
+        newBB.setAttribute("style",
+                      "top: " + (box.top_row * height) + 
                       "px; right: " + (width - (box.right_col * width)) +
                       "px; left: " + (box.left_col * width) +
                       "px; bottom: " + (height - (box.bottom_row * height)) + "px;");
         image.after(newBB);
-      })
-    );
+      });
 
     // Smooth scrolls down to the image after boundings after done.
     const y = image.getBoundingClientRect().top + window.scrollY;
@@ -103,7 +108,7 @@ class App extends Component {
       behavior: 'smooth'
     })
 
-    this.setState({boxesIDs: newSetOfIDs, active: true});
+    this.setState({boxesIDs: newSetOfIDs, active: true}, () => console.log(this.state.boxesIDs));
   }
 
   removeFaceBoxes = () => {
@@ -127,7 +132,7 @@ class App extends Component {
             if (r.status.code === 10000) {
               this.drawFaceBox(this.findFacesLocations(r));
             } else {
-              console.error("API request failed.");
+              console.error("API request failed - Code returned:", r.status.code);
             }
           })
           .catch(error => console.error('Oops?', error));
@@ -142,9 +147,11 @@ class App extends Component {
           <Logo />
           <Navigation />
         </div>
+        {/* <SignIn /> */}
         <Rank />
         <ImageLinkForm onLinkInput={this.onLinkInput} onButtonClick={this.onButtonClick}/>
         <FaceRecognition imageLink={this.state.input} />
+        <BBAutoResize BBSizes={this.state.boxesSizes} BBIDs={this.state.boxesIDs} active={this.state.active} />
       </div>
     );
   }
